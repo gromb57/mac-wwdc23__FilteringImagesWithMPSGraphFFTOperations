@@ -230,43 +230,45 @@ struct ContentView: View {
     
     var body: some View {
         // Generate the user interface as a vertical stack of elements that you want to display.
-        VStack {
-            Image(convertToCGImage(image: ctx.currentImage!, useDeviceRGB: true), scale: 1.5, label: Text(verbatim: "test"))
-            Text("Graph type: " + String(describing: currentGraph))
-            HStack {
-                Button("Run FFT") {
-                    useOrigImage = false
-                    currentGraph = GraphType.full
-                    updateFFTImage(currentGraph)
+        ScrollView {
+            VStack {
+                Image(convertToCGImage(image: ctx.currentImage!, useDeviceRGB: true), scale: 1.5, label: Text(verbatim: "test"))
+                Text("Graph type: " + String(describing: currentGraph))
+                HStack {
+                    Button("Run FFT") {
+                        useOrigImage = false
+                        currentGraph = GraphType.full
+                        updateFFTImage(currentGraph)
+                    }
+                    Button("Show filter") {
+                        useOrigImage = false
+                        currentGraph = GraphType.showFilter
+                        updateFFTImage(currentGraph)
+                    }
+                    Button("Show FFT Magnitude") {
+                        useOrigImage = false
+                        currentGraph = GraphType.showFFTMag
+                        updateFFTImage(currentGraph)
+                    }
+                    Button("Show FFT Phase") {
+                        useOrigImage = false
+                        currentGraph = GraphType.showFFTPhase
+                        updateFFTImage(currentGraph)
+                    }
+                    Button("Show Original") {
+                        useOrigImage = true
+                        updateFFTImage(currentGraph)
+                    }
                 }
-                Button("Show filter") {
-                    useOrigImage = false
-                    currentGraph = GraphType.showFilter
-                    updateFFTImage(currentGraph)
-                }
-                Button("Show FFT Magnitude") {
-                    useOrigImage = false
-                    currentGraph = GraphType.showFFTMag
-                    updateFFTImage(currentGraph)
-                }
-                Button("Show FFT Phase") {
-                    useOrigImage = false
-                    currentGraph = GraphType.showFFTPhase
-                    updateFFTImage(currentGraph)
-                }
-                Button("Show Original") {
-                    useOrigImage = true
-                    updateFFTImage(currentGraph)
-                }
+                Slider(value: $upperLimit, in: 1...1000, onEditingChanged: { _ in updateFFTImage(currentGraph) })
+                Text("Upper limit radius: \(upperLimit, specifier: "%.1f")")
+                Slider(value: $lowerLimit, in: 0...100, onEditingChanged: { _ in updateFFTImage(currentGraph) })
+                Text("Lower limit radius: \(lowerLimit, specifier: "%.1f")")
+                Slider(value: $resultScale, in: 0...20, onEditingChanged: { _ in updateFFTImage(currentGraph) })
+                Text("Result scale: \(resultScale, specifier: "%.1f")")
             }
-            Slider(value: $upperLimit, in: 1...1000, onEditingChanged: { _ in updateFFTImage(currentGraph) })
-            Text("Upper limit radius: \(upperLimit, specifier: "%.1f")")
-            Slider(value: $lowerLimit, in: 0...100, onEditingChanged: { _ in updateFFTImage(currentGraph) })
-            Text("Lower limit radius: \(lowerLimit, specifier: "%.1f")")
-            Slider(value: $resultScale, in: 0...20, onEditingChanged: { _ in updateFFTImage(currentGraph) })
-            Text("Result scale: \(resultScale, specifier: "%.1f")")
+            .padding()
         }
-        .padding()
     }
 }
 
